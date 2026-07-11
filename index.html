@@ -173,6 +173,14 @@ body {
   color:var(--muted); margin-bottom:10px;
 }
 
+/* ── Group divider (Стримы проекта) ── */
+.stream-divider {
+  margin-top:8px; padding-top:36px; padding-bottom:2px;
+  border-top:1px solid rgba(255,255,255,0.05);
+  font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:.1em;
+  color:var(--muted);
+}
+
 @media (min-width: 640px) {
   .page { zoom: 1.2; }
 }
@@ -199,7 +207,10 @@ body {
     <div class="navRow">
       <div class="npill" id="np0" onclick="jumpTo(0)"><div class="npill-dot" style="background:var(--coral)"></div><span class="npill-lbl">Бюджет</span></div>
       <div class="npill" id="np1" onclick="jumpTo(1)"><div class="npill-dot" style="background:var(--blue)"></div><span class="npill-lbl">Вехи</span></div>
-      <div class="npill" id="np2" onclick="jumpTo(2)"><div class="npill-dot" style="background:var(--green)"></div><span class="npill-lbl">Стримы</span></div>
+      <div class="npill" id="np2" onclick="jumpTo(2)"><div class="npill-dot" style="background:var(--green)"></div><span class="npill-lbl">IT</span></div>
+      <div class="npill" id="np3" onclick="jumpTo(3)"><div class="npill-dot" style="background:var(--gold)"></div><span class="npill-lbl">Интеграции</span></div>
+      <div class="npill" id="np4" onclick="jumpTo(4)"><div class="npill-dot" style="background:var(--violet)"></div><span class="npill-lbl">Партнёры</span></div>
+      <div class="npill" id="np5" onclick="jumpTo(5)"><div class="npill-dot" style="background:var(--brown)"></div><span class="npill-lbl">Оргстрим</span></div>
     </div>
   </div>
 </div>
@@ -216,11 +227,33 @@ body {
   <div id="content1"></div>
 </div>
 
+<div class="stream-divider">Стримы проекта</div>
+
 <div class="sec" id="s2">
-  <div class="eyebrow"><div class="eye-dot" id="ed2"></div><span id="ey2">Стримы проекта</span></div>
-  <div class="sec-title"><em id="em2">—</em> стрима</div>
+  <div class="eyebrow"><div class="eye-dot" id="ed2"></div><span id="ey2">Обновления недели</span></div>
+  <div class="sec-title"><em id="em2">IT</em></div>
   <div id="content2"></div>
 </div>
+
+<div class="sec" id="s3">
+  <div class="eyebrow"><div class="eye-dot" id="ed3"></div><span id="ey3">Обновления недели</span></div>
+  <div class="sec-title"><em id="em3">Интеграции</em></div>
+  <div id="content3"></div>
+</div>
+
+<div class="sec" id="s4">
+  <div class="eyebrow"><div class="eye-dot" id="ed4"></div><span id="ey4">Обновления недели</span></div>
+  <div class="sec-title"><em id="em4">Партнёры</em></div>
+  <div id="content4"></div>
+</div>
+
+<div class="sec" id="s5">
+  <div class="eyebrow"><div class="eye-dot" id="ed5"></div><span id="ey5">Обновления недели</span></div>
+  <div class="sec-title"><em id="em5">Организационный стрим</em></div>
+  <div id="content5"></div>
+</div>
+
+<div class="foot" id="pagefoot"></div>
 
 </div>
 
@@ -230,11 +263,17 @@ const SECS = [
     amb:'radial-gradient(ellipse 110% 65% at 50% -10%, rgba(255,122,89,.20) 0%, transparent 60%), radial-gradient(ellipse 60% 40% at 85% 90%, rgba(200,70,30,.09) 0%, transparent 50%), #07070a' },
   { acc:'#2db8f5', rgb:'45,184,245', icon:'🎯',
     amb:'radial-gradient(ellipse 110% 65% at 50% -10%, rgba(45,184,245,.22) 0%, transparent 60%), radial-gradient(ellipse 60% 40% at 85% 90%, rgba(0,120,200,.10) 0%, transparent 50%), #07070a' },
-  { acc:'#0ae448', rgb:'10,228,72',  icon:'🧭',
+  { acc:'#0ae448', rgb:'10,228,72',  icon:'💻',
     amb:'radial-gradient(ellipse 110% 65% at 30% 5%, rgba(10,228,72,.12) 0%, transparent 60%), radial-gradient(ellipse 60% 40% at 80% 80%, rgba(171,255,132,.06) 0%, transparent 50%), #07070a' },
+  { acc:'#f5c842', rgb:'245,200,66', icon:'🔗',
+    amb:'radial-gradient(ellipse 110% 65% at 50% -10%, rgba(245,200,66,.18) 0%, transparent 60%), radial-gradient(ellipse 60% 40% at 85% 90%, rgba(196,140,20,.08) 0%, transparent 50%), #07070a' },
+  { acc:'#a78bfa', rgb:'167,139,250', icon:'🤝',
+    amb:'radial-gradient(ellipse 110% 65% at 50% -10%, rgba(167,139,250,.18) 0%, transparent 60%), radial-gradient(ellipse 60% 40% at 85% 90%, rgba(120,80,220,.08) 0%, transparent 50%), #07070a' },
+  { acc:'#c47d3e', rgb:'196,125,62', icon:'🗂️',
+    amb:'radial-gradient(ellipse 110% 65% at 50% -10%, rgba(196,125,62,.18) 0%, transparent 60%), radial-gradient(ellipse 60% 40% at 85% 90%, rgba(150,90,40,.08) 0%, transparent 50%), #07070a' },
 ];
 
-const secEls = [0,1,2].map(i => document.getElementById('s'+i));
+const secEls = [0,1,2,3,4,5].map(i => document.getElementById('s'+i));
 let cur = -1;
 
 function apply(idx) {
@@ -252,7 +291,7 @@ function apply(idx) {
   wt.style.borderColor = `rgba(${s.rgb},.32)`;
   wt.style.color = s.acc;
 
-  for (let i = 0; i < 3; i++) {
+  for (let i = 0; i < 6; i++) {
     const np = document.getElementById('np'+i);
     const si = SECS[i];
     if (i === idx) {
@@ -268,7 +307,7 @@ function apply(idx) {
     }
   }
 
-  for (let i = 0; i < 3; i++) {
+  for (let i = 0; i < 6; i++) {
     const si = SECS[i];
     const ey = document.getElementById('ey'+i);
     const em = document.getElementById('em'+i);
@@ -430,24 +469,16 @@ const STREAM_ORDER = ['it', 'integrations', 'partners', 'org'];
 
 function renderStreams(d) {
   const streams = d.streams || {};
-  const keys = STREAM_ORDER.filter(k => streams[k]);
-  document.getElementById('em2').textContent = `${keys.length}`;
-
-  const streamsWithUpdates = keys.filter(k => (streams[k].done || []).length > 0);
-  const visibleKeys = IS_NEW ? streamsWithUpdates : keys;
-
-  let html = '';
-  if (IS_NEW && visibleKeys.length === 0) {
-    html = `<div style="text-align:center;color:var(--muted);padding:32px 0;font-size:14px">Пока нет обновлений за эту неделю</div>`;
-  }
-  visibleKeys.forEach(k => {
+  STREAM_ORDER.forEach((k, i) => {
     const st = streams[k];
+    const contentEl = document.getElementById('content' + (2 + i));
+    if (!st || !contentEl) return;
+
     const doneItems = fmtList(st.done, 'var(--green)');
     const artifactItems = fmtArtifactList(st.artifacts, 'var(--green)');
-    html += `
-      <div class="icard" data-s="2">
-        <div class="icard-name">${st.title}</div>
-        <div class="icard-divider"></div>
+
+    contentEl.innerHTML = `
+      <div class="icard" data-s="${2 + i}">
         ${doneItems ? `
         <div class="icard-row">
           <div class="icard-field">
@@ -462,8 +493,6 @@ function renderStreams(d) {
         </div>` : ''}
       </div>`;
   });
-
-  document.getElementById('content2').innerHTML = html;
 }
 
 async function loadData() {
@@ -478,8 +507,8 @@ async function loadData() {
   renderMilestones(d);
   renderStreams(d);
 
-  document.getElementById('content2').insertAdjacentHTML('beforeend',
-    `<div class="foot">Bank ID · Неделя ${d.meta.week} · ${d.meta.date}<br>Данные обновлены через Telegram-бот</div>`);
+  document.getElementById('pagefoot').innerHTML =
+    `Bank ID · Неделя ${d.meta.week} · ${d.meta.date}<br>Данные обновлены через Telegram-бот`;
 
   document.querySelectorAll(CARD_SEL).forEach(el => {
     el.style.transition = 'border-color .35s, box-shadow .35s, transform .35s';
