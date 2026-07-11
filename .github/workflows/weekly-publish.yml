@@ -1,0 +1,62 @@
+name: Weekly publish
+
+on:
+  schedule:
+    # Monday 06:00 Moscow time = 03:00 UTC
+    - cron: '0 3 * * 1'
+  workflow_dispatch:
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Archive, promote, generate fresh template
+        run: |
+          node -e "
+          const fs = require('fs');
+
+          const old  = JSON.parse(fs.readFileSync('data.json',     'utf8'));
+          const next = JSON.parse(fs.readFileSync('data-new.json', 'utf8'));
+
+          // Guard: skip if data-new is not ahead of data (already published)
+          if (next.meta.week <= old.meta.week) {
+            console.log('SKIP: data-new week ' + next.meta.week + ' <= data week ' + old.meta.week + ', already published.');
+            process.exit(0);
+          }
+
+          // 1. Archive published week
+          const week = String(old.meta.week).padStart(2, '0');
+          fs.mkdirSync('archive', { recursive: true });
+          fs.writeFileSync('archive/week-' + week + '.json', JSON.stringify(old, null, 2));
+          console.log('Archived week ' + week);
+
+          // 2. Promote data-new → data.json
+          fs.writeFileSync('data.json', JSON.stringify(next, null, 2));
+          console.log('Promoted week ' + next.meta.week);
+
+          // 3. Generate fresh data-new.json for next week
+          const fresh = JSON.parse(JSON.stringify(next));
+          fresh.meta.week   += 1;
+          fresh.meta.updated = new Date().toISOString();
+          // Streams: done/artifacts are cleared each week (same rule as old infra)
+          Object.keys(fresh.streams || {}).forEach(k => {
+            fresh.streams[k].done      = [];
+            fresh.streams[k].artifacts = [];
+          });
+          // milestones and budget are NOT reset — they carry forward as running totals
+          fs.writeFileSync('data-new.json', JSON.stringify(fresh, null, 2));
+          console.log('Generated fresh template for week ' + fresh.meta.week);
+          "
+
+      - name: Commit
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data.json data-new.json archive/
+          WEEK=$(node -p "JSON.parse(require('fs').readFileSync('data.json','utf8')).meta.week")
+          git diff --cached --quiet || git commit -m "chore: publish week ${WEEK}"
+          git push
