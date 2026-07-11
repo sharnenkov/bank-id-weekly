@@ -215,3 +215,4 @@ vercel domains add bank-id-weekly-new.vercel.app
 | GitHub | Роль |
 |--------|------|
 | @sharnenkov | Owner |
+| @kopyray-ux | Write (контент, вёрстка) |
