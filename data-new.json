@@ -8,7 +8,7 @@
     }
   },
   "meta": {
-    "week": 1,
+    "week": 29,
     "date": "13 июля 2026",
     "updated": "2026-07-11T17:14:19.000Z"
   },
@@ -19,15 +19,49 @@
   },
   "milestones": {
     "items": [
-      { "id": "m1", "title": "1000 пользователей", "target": 1000, "current": 0, "unit": "пользователей" },
-      { "id": "m2", "title": "Веха 2", "target": null, "current": null, "unit": "" },
-      { "id": "m3", "title": "Веха 3", "target": null, "current": null, "unit": "" }
+      {
+        "id": "m1",
+        "title": "1000 пользователей",
+        "target": 1000,
+        "current": 0,
+        "unit": "пользователей"
+      },
+      {
+        "id": "m2",
+        "title": "Веха 2",
+        "target": null,
+        "current": null,
+        "unit": ""
+      },
+      {
+        "id": "m3",
+        "title": "Веха 3",
+        "target": null,
+        "current": null,
+        "unit": ""
+      }
     ]
   },
   "streams": {
-    "it":           { "title": "IT", "done": [], "artifacts": [] },
-    "integrations": { "title": "Интеграции", "done": [], "artifacts": [] },
-    "partners":     { "title": "Партнёры", "done": [], "artifacts": [] },
-    "org":          { "title": "Организационный стрим", "done": [], "artifacts": [] }
+    "it": {
+      "title": "IT",
+      "done": [],
+      "artifacts": []
+    },
+    "integrations": {
+      "title": "Интеграции",
+      "done": [],
+      "artifacts": []
+    },
+    "partners": {
+      "title": "Партнёры",
+      "done": [],
+      "artifacts": []
+    },
+    "org": {
+      "title": "Организационный стрим",
+      "done": [],
+      "artifacts": []
+    }
   }
 }

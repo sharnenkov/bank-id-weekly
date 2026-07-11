@@ -39,8 +39,20 @@ jobs:
           console.log('Promoted week ' + next.meta.week);
 
           // 3. Generate fresh data-new.json for next week
+          const MONTHS_GEN = ['января','февраля','марта','апреля','мая','июня','июля','августа','сентября','октября','ноября','декабря'];
+          function parseRuDate(s) {
+            const [day, monName, year] = s.split(' ');
+            return new Date(Number(year), MONTHS_GEN.indexOf(monName), Number(day));
+          }
+          function fmtRuDate(d) {
+            return d.getDate() + ' ' + MONTHS_GEN[d.getMonth()] + ' ' + d.getFullYear();
+          }
+
           const fresh = JSON.parse(JSON.stringify(next));
           fresh.meta.week   += 1;
+          const nextMonday = parseRuDate(next.meta.date);
+          nextMonday.setDate(nextMonday.getDate() + 7);
+          fresh.meta.date    = fmtRuDate(nextMonday);
           fresh.meta.updated = new Date().toISOString();
           // Streams: done/artifacts are cleared each week (same rule as old infra)
           Object.keys(fresh.streams || {}).forEach(k => {
